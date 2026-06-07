@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Validation System</title>
+
+<style>
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#eaf6ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+/* Card */
+.container{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    width:350px;
+    box-shadow:0 10px 25px rgba(0,123,255,0.2);
+}
+
+/* Heading */
+h2{
+    text-align:center;
+    color:#0056b3;
+}
+
+/* Inputs */
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #cce7ff;
+    border-radius:8px;
+    outline:none;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:10px;
+    background:linear-gradient(135deg,#87cefa,#1e90ff);
+    border:none;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+/* Message */
+.message{
+    text-align:center;
+    margin-top:10px;
+    font-size:14px;
+}
+
+.success{
+    color:green;
+}
+
+.error{
+    color:red;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Login System</h2>
+
+    <input type="text" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <button onclick="validateLogin()">Login</button>
+
+    <div id="msg" class="message"></div>
+
+</div>
+
+<script>
+
+function validateLogin(){
+
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let msg = document.getElementById("msg");
+
+    // Email regex
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Password rule (min 6 chars)
+    let passwordPattern = /^.{6,}$/;
+
+    if(!emailPattern.test(email)){
+        msg.innerHTML = "Invalid Email Format";
+        msg.className = "message error";
+        return;
+    }
+
+    if(!passwordPattern.test(password)){
+        msg.innerHTML = "Password must be at least 6 characters";
+        msg.className = "message error";
+        return;
+    }
+
+    msg.innerHTML = "Login Successful! Redirecting...";
+    msg.className = "message success";
+
+    // fake redirect
+    setTimeout(()=>{
+        window.location.href = "home.html";
+    },1500);
+}
+
+</script>
+
+</body>
+</html>
