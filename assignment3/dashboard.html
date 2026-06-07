@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#eaf6ff;
+    text-align:center;
+}
+
+.card{
+    width:300px;
+    margin:10px auto;
+    padding:15px;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+button{
+    background:#1e90ff;
+    color:white;
+    border:none;
+    padding:8px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Doctors</h2>
+
+<div id="doctors"></div>
+
+<script>
+fetch("http://localhost:3000/doctors")
+.then(res=>res.json())
+.then(data=>{
+
+    let html="";
+
+    data.forEach(d=>{
+
+        html+=`
+        <div class="card">
+            <h3>${d.name}</h3>
+            <p>${d.specialization}</p>
+            <p>${d.timing}</p>
+            <button onclick="book(${d.id})">Book</button>
+        </div>
+        `;
+    });
+
+    document.getElementById("doctors").innerHTML=html;
+});
+
+function book(id){
+
+    let email=localStorage.getItem("email");
+
+    fetch("http://localhost:3000/book",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({email,doctor_id:id})
+    })
+    .then(res=>res.text())
+    .then(alert);
+}
+</script>
+
+</body>
+</html>
