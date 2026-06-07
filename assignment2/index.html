@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Validation System</title>
+<title>Login Page</title>
 
 <style>
-
 body{
     font-family:'Segoe UI',sans-serif;
     background:#eaf6ff;
@@ -17,62 +15,46 @@ body{
     margin:0;
 }
 
-/* Card */
 .container{
-    background:white; 
-    padding:30px;
+    background:white;
+    padding:25px;
     border-radius:15px;
     width:350px;
     box-shadow:0 10px 25px rgba(0,123,255,0.2);
 }
 
-/* Heading */
 h2{
     text-align:center;
     color:#0056b3;
 }
 
-/* Inputs */
-input{
+input, select{
     width:100%;
     padding:10px;
-    margin:10px 0;
+    margin:8px 0;
     border:1px solid #cce7ff;
     border-radius:8px;
-    outline:none;
 }
 
-/* Button */
 button{
     width:100%;
     padding:10px;
     background:linear-gradient(135deg,#87cefa,#1e90ff);
-    border:none;
     color:white;
+    border:none;
     border-radius:8px;
     cursor:pointer;
-    font-weight:bold;
 }
 
 button:hover{
     opacity:0.9;
 }
 
-/* Message */
-.message{
-    text-align:center;
-    margin-top:10px;
-    font-size:14px;
-}
-
-.success{
-    color:green;
-}
-
 .error{
     color:red;
+    font-size:13px;
+    text-align:center;
 }
-
 </style>
 </head>
 
@@ -80,50 +62,53 @@ button:hover{
 
 <div class="container">
 
-    <h2>Login System</h2>
+    <h2>Login Form</h2>
 
+    <input type="text" id="name" placeholder="Enter Name">
     <input type="text" id="email" placeholder="Enter Email">
     <input type="password" id="password" placeholder="Enter Password">
 
-    <button onclick="validateLogin()">Login</button>
+    <select id="gender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
 
-    <div id="msg" class="message"></div>
+    <button onclick="login()">Login</button>
+
+    <div id="msg" class="error"></div>
 
 </div>
 
 <script>
 
-function validateLogin(){
+function login(){
 
+    let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
+    let gender = document.getElementById("gender").value;
     let msg = document.getElementById("msg");
 
-    // Email regex
+    if(name === "" || email === "" || password === "" || gender === ""){
+        msg.innerHTML = "All fields are required!";
+        return;
+    }
+
     let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // Password rule (min 6 chars)
-    let passwordPattern = /^.{6,}$/;
-
     if(!emailPattern.test(email)){
-        msg.innerHTML = "Invalid Email Format";
-        msg.className = "message error";
+        msg.innerHTML = "Invalid email format!";
         return;
     }
 
-    if(!passwordPattern.test(password)){
-        msg.innerHTML = "Password must be at least 6 characters";
-        msg.className = "message error";
-        return;
-    }
+    // store data
+    localStorage.setItem("name", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
+    localStorage.setItem("gender", gender);
 
-    msg.innerHTML = "Login Successful! Redirecting...";
-    msg.className = "message success";
-
-    // fake redirect
-    setTimeout(()=>{
-        window.location.href = "home.html";
-    },1500);
+    // redirect
+    window.location.href = "success.html";
 }
 
 </script>
