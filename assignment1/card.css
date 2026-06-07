@@ -1,8 +1,47 @@
-.blog-card{
-    transition:0.3s;
+/* GENERAL FONT */
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
 }
 
-.blog-card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+/* HERO SECTION */
+.hero {
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #667eea, #764ba2);
+}
+
+/* BLOG CARDS */
+.blog-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Hover effect */
+.blog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Image styling */
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* FOOTER */
+footer {
+  margin-top: 40px;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .hero {
+    height: 40vh;
+    padding: 20px;
+  }
 }
