@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#eaf6ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.box{
+    width:350px;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+}
+button{
+    width:100%;
+    padding:10px;
+    background:#1e90ff;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Register Patient</h2>
+
+    <input id="name" placeholder="Name">
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+
+    <p id="msg"></p>
+
+    <a href="login.html">Login</a>
+</div>
+
+<script>
+function register(){
+
+    let name=document.getElementById("name").value;
+    let email=document.getElementById("email").value;
+    let password=document.getElementById("password").value;
+    let msg=document.getElementById("msg");
+
+    // VALIDATION
+    if(!name||!email||!password){
+        msg.innerText="All fields required ❌";
+        return;
+    }
+
+    let emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailPattern.test(email)){
+        msg.innerText="Invalid email ❌";
+        return;
+    }
+
+    if(password.length<4){
+        msg.innerText="Weak password ❌";
+        return;
+    }
+
+    fetch("http://localhost:3000/register",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name,email,password})
+    })
+    .then(res=>res.text())
+    .then(data=>{
+        msg.innerText=data;
+    });
+}
+</script>
+
+</body>
+</html>
