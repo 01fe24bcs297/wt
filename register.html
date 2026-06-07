@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Customer Register</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>🍔 Customer Register</h1>
+
+
+    <!-- CUSTOMER NAME -->
+
+    <input
+        type="text"
+        id="name"
+        placeholder="Enter Username"
+    >
+
+
+    <!-- PASSWORD -->
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+    >
+
+
+    <!-- EMAIL -->
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Enter Email"
+    >
+
+
+    <!-- PHONE -->
+
+    <input
+        type="text"
+        id="phone"
+        placeholder="Enter Phone Number"
+    >
+
+
+    <!-- ADDRESS -->
+
+    <textarea
+        id="address"
+        placeholder="Enter Address"
+    ></textarea>
+
+    <br><br>
+
+
+    <!-- REGISTER BUTTON -->
+
+    <button onclick="register()">
+
+        Register
+
+    </button>
+
+    <br><br>
+
+
+    <!-- LOGIN PAGE LINK -->
+
+    <a href="login.html">
+
+        <button>
+
+            Back To Login
+
+        </button>
+
+    </a>
+
+</div>
+
+
+
+<script>
+
+
+// ==========================
+// REGISTER FUNCTION
+// ==========================
+
+async function register() {
+
+    const customerName =
+    document.getElementById("name").value.trim();
+
+    const password =
+    document.getElementById("password").value.trim();
+
+    const email =
+    document.getElementById("email").value.trim();
+
+    const phone =
+    document.getElementById("phone").value.trim();
+
+    const address =
+    document.getElementById("address").value.trim();
+
+
+    // ==========================
+    // EMPTY FIELD VALIDATION
+    // ==========================
+
+    if(
+        customerName === "" ||
+        password === "" ||
+        email === "" ||
+        phone === "" ||
+        address === ""
+    ) {
+
+        alert("Please Fill All Fields ❌");
+
+        return;
+    }
+
+
+    // ==========================
+    // EMAIL VALIDATION
+    // ==========================
+
+    const emailPattern =
+    /^[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]{2,}$/;
+
+
+    if(!emailPattern.test(email)) {
+
+        alert("Enter Valid Email ❌");
+
+        return;
+    }
+
+
+    // ==========================
+    // PHONE VALIDATION
+    // ==========================
+
+    const phonePattern =
+    /^[0-9]{10}$/;
+
+    if(!phonePattern.test(phone)) {
+
+        alert("Phone Number Must Be 10 Digits ❌");
+
+        return;
+    }
+
+
+    // ==========================
+    // PASSWORD VALIDATION
+    // ==========================
+
+    if(password.length < 4) {
+
+        alert("Password Must Be At Least 4 Characters ❌");
+
+        return;
+    }
+
+
+    // ==========================
+    // SEND DATA TO BACKEND
+    // ==========================
+
+    const response = await fetch('/register', {
+
+        method:'POST',
+
+        headers: {
+
+            'Content-Type':'application/json'
+        },
+
+        body: JSON.stringify({
+
+            customerName,
+            password,
+            email,
+            phone,
+            address
+        })
+    });
+
+
+    // ==========================
+    // GET RESPONSE
+    // ==========================
+
+    const message = await response.text();
+
+    alert(message);
+
+
+    // ==========================
+    // REDIRECT TO LOGIN
+    // ==========================
+
+    if(message.includes("Successful")) {
+
+        window.location.href =
+        "login.html";
+    }
+}
+
+</script>
+
+</body>
+</html>

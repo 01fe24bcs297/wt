@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Orders</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+
+    <h2>🍔 Food Delivery</h2>
+
+    <div>
+        <a href="restaurant.html">Restaurants</a>
+        <a href="login.html">Logout</a>
+    </div>
+
+</div>
+
+<h2 class="page-title">My Orders</h2>
+
+<div class="cards-container" id="orders-list"></div>
+
+<script>
+
+// ==========================
+// GET CUSTOMER NAME
+// ==========================
+
+const customerName =
+localStorage.getItem("customerName");
+
+
+// ==========================
+// IF CUSTOMER NOT LOGGED IN
+// ==========================
+
+if(!customerName) {
+
+    window.location.href = "login.html";
+}
+
+
+// ==========================
+// FETCH ORDERS
+// ==========================
+
+fetch('/orders')
+
+.then(res => res.json())
+
+.then(data => {
+
+    // ==========================
+    // SHOW ONLY CUSTOMER ORDERS
+    // ==========================
+
+    const myOrders = data.filter(order =>
+        order.customerName === customerName
+    );
+
+
+    // ==========================
+    // IF NO ORDERS
+    // ==========================
+
+    if(myOrders.length === 0) {
+
+        document.getElementById("orders-list").innerHTML = `
+            <p class="empty-msg">
+                No orders yet 😔
+            </p>
+        `;
+
+        return;
+    }
+
+
+    // ==========================
+    // DISPLAY ORDERS
+    // ==========================
+
+    let output = "";
+
+    myOrders.forEach(order => {
+
+        let statusClass = "status-preparing";
+
+        if(order.orderStatus === "Out for Delivery") {
+
+            statusClass = "status-out";
+        }
+
+        if(order.orderStatus === "Delivered") {
+
+            statusClass = "status-delivered";
+        }
+
+        output += `
+
+        <div class="food-card">
+
+            <h2>${order.foodName}</h2>
+
+            <p>
+                Restaurant:
+                ${order.restaurantName}
+            </p>
+
+            <p>
+                Customer:
+                ${order.customerName}
+            </p>
+
+            <p>
+                Order ID:
+                #${order.id}
+            </p>
+
+            <br>
+
+            <span class="status ${statusClass}">
+                ${order.orderStatus}
+            </span>
+
+        </div>
+
+        `;
+    });
+
+
+    // ==========================
+    // SHOW DATA
+    // ==========================
+
+    document.getElementById("orders-list").innerHTML =
+    output;
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Restaurant Owner</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- ==========================
+NAVBAR
+========================== -->
+
+<div class="navbar">
+
+    <h2>🍔 Owner Dashboard</h2>
+
+    <div>
+        <a href="login.html">Logout</a>
+    </div>
+
+</div>
+
+
+<!-- ==========================
+TITLE
+========================== -->
+
+<h2 class="page-title" id="title"></h2>
+
+
+<!-- ==========================
+ADD FOOD SECTION
+========================== -->
+
+<div class="add-food-box">
+
+    <h2>Add Menu Item</h2>
+
+    <input
+    type="text"
+    id="foodName"
+    placeholder="Food Name">
+
+    <input
+    type="text"
+    id="category"
+    placeholder="Category">
+
+    <input
+    type="number"
+    id="price"
+    placeholder="Price">
+
+    <input
+    type="text"
+    id="deliveryTime"
+    placeholder="Delivery Time">
+
+    <button onclick="addFood()">
+        Add Food
+    </button>
+
+</div>
+
+
+
+<!-- ==========================
+MENU SECTION
+========================== -->
+
+<h2 class="page-title">
+    Restaurant Menu
+</h2>
+
+<div
+class="cards-container"
+id="foods-list">
+</div>
+
+
+
+<!-- ==========================
+ORDERS SECTION
+========================== -->
+
+<h2 class="page-title">
+    Restaurant Orders
+</h2>
+
+<div
+class="cards-container"
+id="orders-list">
+</div>
+
+
+
+<script>
+
+// ==========================
+// RESTAURANT NAME
+// ==========================
+
+const restaurantName =
+localStorage.getItem("restaurantName");
+
+console.log(restaurantName);
+
+
+// ==========================
+// TITLE
+// ==========================
+
+document.getElementById("title").innerText =
+restaurantName + " Dashboard";
+
+
+
+// ==========================
+// LOAD FOODS
+// ==========================
+
+function loadFoods() {
+
+    fetch('/foods')
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        const foods = data.filter(food =>
+
+            food.restaurantName.toLowerCase()
+            ===
+            restaurantName.toLowerCase()
+        );
+
+        let output = "";
+
+        foods.forEach(food => {
+
+            output += `
+
+            <div class="food-card">
+
+                <h2>${food.foodName}</h2>
+
+                <p>
+                Category:
+                ${food.category}
+                </p>
+
+                <p>
+                Price:
+                ₹${food.price}
+                </p>
+
+                <p>
+                Delivery:
+                ${food.deliveryTime}
+                </p>
+
+            </div>
+            `;
+        });
+
+        document.getElementById("foods-list")
+        .innerHTML = output;
+    });
+}
+
+
+
+// ==========================
+// LOAD ORDERS
+// ==========================
+
+function loadOrders() {
+
+    fetch('/orders')
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        const orders = data.filter(order =>
+
+            order.restaurantName.toLowerCase()
+            ===
+            restaurantName.toLowerCase()
+        );
+
+        let output = "";
+
+        orders.forEach(order => {
+
+            let statusClass = "status-preparing";
+
+            if(order.orderStatus ===
+            "Out for Delivery") {
+
+                statusClass = "status-out";
+            }
+
+            if(order.orderStatus ===
+            "Delivered") {
+
+                statusClass =
+                "status-delivered";
+            }
+
+            output += `
+
+            <div class="food-card">
+
+                <h2>${order.foodName}</h2>
+
+                <p>
+                Customer:
+                ${order.customerName}
+                </p>
+
+                <p>
+                Order ID:
+                ${order.id}
+                </p>
+
+                <span class="status ${statusClass}">
+                    ${order.orderStatus}
+                </span>
+
+                <br><br>
+
+                <button
+                class="btn-preparing"
+
+                onclick=
+                "updateStatus(${order.id}, 'Preparing')">
+
+                Preparing
+
+                </button>
+
+
+                <button
+                class="btn-out"
+
+                onclick=
+                "updateStatus(${order.id}, 'Out for Delivery')">
+
+                Out
+
+                </button>
+
+
+                <button
+                class="btn-delivered"
+
+                onclick=
+                "updateStatus(${order.id}, 'Delivered')">
+
+                Delivered
+
+                </button>
+
+            </div>
+            `;
+        });
+
+        document.getElementById("orders-list")
+        .innerHTML = output;
+    });
+}
+
+
+
+// ==========================
+// UPDATE STATUS
+// ==========================
+
+function updateStatus(id, status) {
+
+    fetch('/updateStatus/' + id, {
+
+        method:'PUT',
+
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+        body: JSON.stringify({
+
+            orderStatus: status
+        })
+    })
+
+    .then(res => res.text())
+
+    .then(data => {
+
+        loadOrders();
+    });
+}
+
+
+
+// ==========================
+// ADD FOOD
+// ==========================
+
+function addFood() {
+
+    const foodName =
+    document.getElementById("foodName").value;
+
+    const category =
+    document.getElementById("category").value;
+
+    const price =
+    document.getElementById("price").value;
+
+    const deliveryTime =
+    document.getElementById("deliveryTime").value;
+
+
+    fetch('/addFood', {
+
+        method:'POST',
+
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+        body: JSON.stringify({
+
+            foodName,
+            category,
+            price,
+            restaurantName,
+            deliveryTime
+        })
+    })
+
+    .then(res => res.text())
+
+    .then(data => {
+
+        alert(data);
+
+        loadFoods();
+
+        document.getElementById("foodName").value = "";
+
+        document.getElementById("category").value = "";
+
+        document.getElementById("price").value = "";
+
+        document.getElementById("deliveryTime").value = "";
+    });
+}
+
+
+
+// ==========================
+// INITIAL LOAD
+// ==========================
+
+loadFoods();
+
+loadOrders();
+
+
+// AUTO REFRESH
+
+setInterval(() => {
+
+    loadFoods();
+
+    loadOrders();
+
+}, 3000);
+
+</script>
+
+</body>
+</html>

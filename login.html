@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Login</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>🍔 Food Delivery</h1>
+
+    <input
+        type="text"
+        id="username"
+        placeholder="Enter Username"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+    >
+
+    <select id="role">
+
+        <option value="customer">
+            Customer
+        </option>
+
+        <option value="admin">
+            Restaurant Owner
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button onclick="login()">
+        Login
+    </button>
+
+    <br><br>
+
+    <a href="register.html">
+
+        <button>
+            Register
+        </button>
+
+    </a>
+
+</div>
+
+
+<script>
+
+const admins = {
+
+    admin1: {
+
+        password: "1234",
+
+        restaurant: "Food Palace"
+    },
+
+    admin2: {
+
+        password: "1234",
+
+        restaurant: "Pizza Hub"
+    },
+
+    admin3: {
+
+        password: "1234",
+
+        restaurant: "Cafe Time"
+    },
+
+    admin4: {
+
+        password: "1234",
+
+        restaurant: "Roll Center"
+    }
+};
+
+function login() {
+
+    const username =
+    document.getElementById("username").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    const role =
+    document.getElementById("role").value;
+
+
+    if(role === "customer") {
+
+        fetch('/login', {
+
+            method:'POST',
+
+            headers: {
+
+                'Content-Type':'application/json'
+            },
+
+            body: JSON.stringify({
+
+                customerName: username,
+
+                password: password
+            })
+        })
+
+        .then(res => res.json())
+
+        .then(data => {
+
+            if(data.success) {
+
+                localStorage.setItem(
+                    "customerName",
+                    username
+                );
+
+                window.location.href =
+                "restaurant.html";
+            }
+
+            else {
+
+                alert(data.message);
+            }
+        });
+    }
+
+
+    else {
+
+        if(
+            admins[username] &&
+            admins[username].password === password
+        ) {
+
+            localStorage.setItem(
+                "role",
+                "admin"
+            );
+
+            localStorage.setItem(
+
+                "restaurantName",
+
+                admins[username].restaurant
+            );
+
+            window.location.href =
+            "admin.html";
+        }
+
+        else {
+
+            alert("Wrong Admin Credentials ❌");
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>

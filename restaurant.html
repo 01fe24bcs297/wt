@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurants</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+
+    <h2>🍔 Food Delivery</h2>
+
+    <div>
+        <a href="orders.html">My Orders</a>
+        <a href="login.html">Logout</a>
+    </div>
+
+</div>
+
+<h2 class="page-title">Choose a Restaurant</h2>
+
+<div class="cards-container" id="restaurant-list"></div>
+
+<script>
+
+const customerName =
+localStorage.getItem("customerName");
+
+if(!customerName) {
+
+    window.location.href = "login.html";
+}
+
+fetch('/foods')
+
+.then(res => res.json())
+
+.then(data => {
+
+    const restaurants = [];
+
+    data.forEach(food => {
+
+        if(!restaurants.includes(food.restaurantName)) {
+
+            restaurants.push(food.restaurantName);
+        }
+    });
+
+    let output = "";
+
+    restaurants.forEach(name => {
+
+        const itemCount =
+        data.filter(f =>
+        f.restaurantName === name).length;
+
+        output += `
+        <div class="food-card">
+
+            <h2>🏪 ${name}</h2>
+
+            <p>${itemCount} food items available</p>
+
+            <br>
+
+            <button onclick="openRestaurant('${name}')">
+                View Menu
+            </button>
+
+        </div>
+        `;
+    });
+
+    document.getElementById("restaurant-list").innerHTML =
+    output;
+});
+
+function openRestaurant(name) {
+
+    localStorage.setItem(
+        "selectedRestaurant",
+        name
+    );
+
+    window.location.href = "menu.html";
+}
+
+</script>
+
+</body>
+</html>

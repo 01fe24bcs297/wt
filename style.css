@@ -1,0 +1,516 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+
+    background:
+    linear-gradient(
+    135deg,
+    #fff5e6,
+    #ffe0b2
+    );
+
+    min-height:100vh;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+
+    background:
+    linear-gradient(
+    90deg,
+    #ff5722,
+    #ff9800
+    );
+
+    padding:18px 40px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0 4px 15px rgba(0,0,0,0.2);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+}
+
+.navbar h2{
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:600;
+}
+
+.navbar a{
+
+    color:white;
+
+    text-decoration:none;
+
+    margin-left:25px;
+
+    font-weight:500;
+
+    transition:0.3s;
+}
+
+.navbar a:hover{
+
+    color:#fff3e0;
+
+    transform:scale(1.05);
+}
+
+
+/* =========================
+   PAGE TITLE
+========================= */
+
+.page-title{
+
+    text-align:center;
+
+    margin-top:35px;
+
+    color:#e65100;
+
+    font-size:38px;
+
+    font-weight:700;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.cards-container{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:30px;
+
+    padding:40px;
+}
+
+
+/* =========================
+   FOOD CARD
+========================= */
+
+.food-card{
+
+    width:300px;
+
+    background:rgb(231, 191, 145);
+
+    border-radius:22px;
+
+    padding:25px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.12);
+
+    transition:0.4s ease;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+
+/* TOP ORANGE LINE */
+
+.food-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:6px;
+
+    background:
+    linear-gradient(
+    90deg,
+    #ff5722,
+    #392d1b
+    );
+}
+
+
+/* HOVER EFFECT */
+
+.food-card:hover{
+
+    transform:
+    translateY(-12px)
+    scale(1.03);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,0.18);
+}
+
+
+/* CARD TEXT */
+
+.food-card h2{
+
+    color:#e65100;
+
+    margin-bottom:12px;
+
+    font-size:26px;
+}
+
+.food-card p{
+
+    color:#555;
+
+    margin:8px 0;
+
+    font-size:15px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+
+    border:none;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+    90deg,
+    #ff5722,
+    #ff9800
+    );
+
+    color:white;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    margin-top:10px;
+}
+
+button:hover{
+
+    transform:
+    scale(1.07);
+
+    box-shadow:
+    0 8px 18px rgba(255,87,34,0.35);
+}
+
+
+/* STATUS BUTTONS */
+
+.btn-preparing{
+
+    background:
+    linear-gradient(
+    90deg,
+    #ff9800,
+    #ffc107
+    );
+
+    color:black;
+}
+
+.btn-out{
+
+    background:
+    linear-gradient(
+    90deg,
+    #ff7043,
+    #ff5722
+    );
+}
+
+.btn-delivered{
+
+    background:
+    linear-gradient(
+    90deg,
+    #43a047,
+    #66bb6a
+    );
+}
+
+
+/* =========================
+   LOGIN BOX
+========================= */
+
+.login-box{
+
+    width:380px;
+
+    margin:90px auto;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.15);
+
+    text-align:center;
+}
+
+.login-box h1{
+
+    color:#e65100;
+
+    margin-bottom:25px;
+
+    font-size:38px;
+}
+
+
+/* INPUTS */
+
+.login-box input,
+.login-box select{
+
+    width:100%;
+
+    padding:14px;
+
+    margin:12px 0;
+
+    border:2px solid #ffe0b2;
+
+    border-radius:12px;
+
+    outline:none;
+
+    transition:0.3s;
+
+    font-size:15px;
+}
+
+.login-box input:focus,
+.login-box select:focus{
+
+    border-color:#ff9800;
+
+    box-shadow:
+    0 0 10px rgba(255,152,0,0.3);
+}
+
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.status{
+
+    display:inline-block;
+
+    padding:9px 16px;
+
+    border-radius:20px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-top:10px;
+}
+
+.status-preparing{
+
+    background:#fff3cd;
+
+    color:#856404;
+}
+
+.status-out{
+
+    background:#ffe0b2;
+
+    color:#e65100;
+}
+
+.status-delivered{
+
+    background:#d4edda;
+
+    color:#155724;
+}
+
+
+/* =========================
+   EMPTY MESSAGE
+========================= */
+
+.empty-msg{
+
+    text-align:center;
+
+    font-size:22px;
+
+    color:#e65100;
+
+    margin-top:40px;
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#ff9800;
+
+    border-radius:20px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .navbar{
+
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+    .page-title{
+
+        font-size:28px;
+    }
+
+    .food-card{
+
+        width:90%;
+    }
+
+    .login-box{
+
+        width:90%;
+    }
+}
+/* ==========================
+ADD FOOD BOX
+========================== */
+
+.add-food-box{
+
+    width:90%;
+
+    max-width:500px;
+
+    margin:30px auto;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.add-food-box h2{
+
+    margin-bottom:20px;
+
+    color:#ff6600;
+
+    text-align:center;
+}
+
+.add-food-box input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    border-radius:10px;
+
+    border:1px solid #ccc;
+
+    font-size:16px;
+}
+
+.add-food-box button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#ff6600;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.add-food-box button:hover{
+
+    background:#e65100;
+
+    transform:scale(1.03);
+}

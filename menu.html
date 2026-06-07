@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+
+    <h2>🍔 Food Delivery</h2>
+
+    <div>
+        <a href="restaurant.html">Restaurants</a>
+        <a href="orders.html">My Orders</a>
+        <a href="login.html">Logout</a>
+    </div>
+
+</div>
+
+<h2 class="page-title" id="menu-title"></h2>
+
+<div class="cards-container" id="food-list"></div>
+
+<script>
+
+const customerName =
+localStorage.getItem("customerName");
+
+const selectedRestaurant =
+localStorage.getItem("selectedRestaurant");
+
+if(!customerName) {
+
+    window.location.href = "login.html";
+}
+
+document.getElementById("menu-title").innerText =
+"🏪 " + selectedRestaurant;
+
+
+
+// ==========================
+// LOAD MENU
+// ==========================
+
+function loadFoods() {
+
+    fetch('/foods')
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        const foods = data.filter(food =>
+
+            food.restaurantName.toLowerCase()
+            ===
+            selectedRestaurant.toLowerCase()
+        );
+
+        let output = "";
+
+        foods.forEach(food => {
+
+            output += `
+
+            <div class="food-card">
+
+                <h2>${food.foodName}</h2>
+
+                <p>
+                Category:
+                ${food.category}
+                </p>
+
+                <p>
+                Price:
+                ₹${food.price}
+                </p>
+
+                <p>
+                Delivery:
+                ${food.deliveryTime}
+                </p>
+
+                <br>
+
+                <button
+                onclick="placeOrder('${food.foodName}')">
+
+                Order Now
+
+                </button>
+
+            </div>
+            `;
+        });
+
+        document.getElementById("food-list")
+        .innerHTML = output;
+    });
+}
+
+
+
+// ==========================
+// PLACE ORDER
+// ==========================
+
+function placeOrder(foodName) {
+
+    fetch('/placeOrder', {
+
+        method:'POST',
+
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+        body: JSON.stringify({
+
+            customerName,
+            foodName,
+            restaurantName: selectedRestaurant
+        })
+    })
+
+    .then(res => res.text())
+
+    .then(() => {
+
+        alert("Order Placed ✅");
+
+        window.location.href =
+        "orders.html";
+    });
+}
+
+
+
+// INITIAL LOAD
+
+loadFoods();
+
+
+// AUTO REFRESH MENU
+
+setInterval(() => {
+
+    loadFoods();
+
+}, 3000);
+
+</script>
+
+</body>
+</html>
